@@ -43,7 +43,11 @@ def main():
                                     if i[1] == "Nazwa" or i[1] == "Kupujący":
                                         row_value += "\"" + str(sheet.cell(row_index, cell_index).value) + "\"" + ";"
                                     elif i[1] == "Data płatności":
-                                        date = datetime(*xlrd.xldate_as_tuple(sheet.cell(row_index, cell_index).value, workbook.datemode))
+                                        cell_value = sheet.cell(row_index, cell_index).value
+                                        if isinstance(cell_value, float):
+                                            date = datetime(*xlrd.xldate_as_tuple(cell_value, workbook.datemode))
+                                        else:
+                                            date = datetime.strptime(cell_value, "%Y-%m-%d")
                                         row_value += date.strftime("%d/%m/%Y") + ";"
                                     else:
                                         row_value += str(sheet.cell(row_index, cell_index).value) + ";"
